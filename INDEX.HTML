@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Control de Deuda - YBR 125</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    padding: 20px;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+h1, h2 {
+    text-align: center;
+}
+
+/* RESUMEN TEXTO */
+.resumen p {
+    margin: 6px 0;
+    font-size: 16px;
+}
+
+/* CUADROS ABAJO */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+.card {
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
+.card.abonado {
+    background: #eafaf1;
+    border-left: 6px solid #27ae60;
+    color: #1e8449;
+}
+.card.deuda {
+    background: #fdecea;
+    border-left: 6px solid #c0392b;
+    color: #721c24;
+}
+
+/* HISTORIAL */
+.historial {
+    margin-top: 25px;
+}
+.historial h3 {
+    margin-bottom: 10px;
+}
+.abono {
+    background: #eafaf1;
+    border-left: 6px solid #27ae60;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>CONTROL DE DEUDA</h1>
+<h2>Moto YBR-125 Azul – Creador: @Brayan Raudales</h2>
+
+<div class="resumen">
+<p><strong>Total a pagar:</strong> L 49,999</p>
+<p><strong>Pago diario acordado:</strong> L 70 diarios</p>
+<p><strong>Días transcurridos desde el primer día de compra (20 noviembre 2025):</strong>
+<span id="dias"></span></p>
+<p><strong>Total que debería llevar pagado hoy:</strong>
+L <span id="deberia"></span></p>
+</div>
+
+<div class="cards">
+    <div class="card abonado">
+        Total abonado<br>
+        L <span id="total-abonado"></span>
+    </div>
+    <div class="card deuda">
+        Total que debe al día de hoy<br>
+        L <span id="total-debe"></span>
+    </div>
+</div>
+
+<div class="historial">
+<h3>📅 Días que ha abonado</h3>
+<div id="lista-abonos"></div>
+</div>
+
+</div>
+
+<script>
+// ====== CONFIGURACIÓN ======
+const totalAPagar = 49999;
+const pagoDiario = 70;
+const inicio = new Date(2025, 10, 20); // noviembre = 10
+
+// 👉 AQUÍ SOLO AGREGAS ABONOS
+const abonos = [
+  { fecha: "21 noviembre 2025", monto: 170 },
+  { fecha: "22 noviembre 2025", monto: 100 },
+  { fecha: "23 noviembre 2025", monto: 100 },
+  { fecha: "25 noviembre 2025", monto: 100 },
+  { fecha: "26 noviembre 2025", monto: 100 },
+  { fecha: "30 noviembre 2025", monto: 100 },
+  { fecha: "02 diciembre 2025", monto: 200 },
+  { fecha: "03 diciembre 2025", monto: 100 },
+  { fecha: "11 diciembre 2025", monto: 100 },
+  { fecha: "14 diciembre 2025", monto: 100 },
+  { fecha: "17 diciembre 2025", monto: 100 },
+  { fecha: "18 diciembre 2025", monto: 100 },
+  { fecha: "20 diciembre 2025", monto: 3000 },
+  { fecha: "23 diciembre 2025", monto: 210 },
+  { fecha: "26 diciembre 2025", monto: 210 },
+  { fecha: "31 diciembre 2025", monto: 350 }
+];
+
+// ====== CÁLCULOS ======
+const hoy = new Date();
+const dias = Math.floor((hoy - inicio) / (1000*60*60*24)) + 1;
+const totalDeberia = dias * pagoDiario;
+
+let totalAbonado = 0;
+const lista = document.getElementById("lista-abonos");
+
+abonos.forEach(a => {
+    totalAbonado += a.monto;
+    const div = document.createElement("div");
+    div.className = "abono";
+    div.innerHTML = `<strong>${a.fecha}</strong> — L ${a.monto.toLocaleString()}`;
+    lista.appendChild(div);
+});
+
+const totalDebe = Math.max(0, totalDeberia - totalAbonado);
+
+// ====== MOSTRAR ======
+document.getElementById("dias").innerText = dias;
+document.getElementById("deberia").innerText = totalDeberia.toLocaleString();
+document.getElementById("total-abonado").innerText = totalAbonado.toLocaleString();
+document.getElementById("total-debe").innerText = totalDebe.toLocaleString();
+</script>
+
+</body>
+</html>
