@@ -51,6 +51,24 @@ h1, h2 {
     color: #721c24;
 }
 
+.card.faltante-moto {
+    grid-column: 1 / -1;
+    background: #c0392b;
+    border-left: 8px solid #7b0f0f;
+    color: #fff;
+    text-align: center;
+    font-size: 22px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(192,57,43,0.25);
+}
+.card.faltante-moto small {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: normal;
+    opacity: 0.95;
+}
+
 /* HISTORIAL */
 .historial {
     margin-top: 25px;
@@ -90,6 +108,12 @@ L <span id="deberia"></span></p>
     <div class="card deuda">
         Total que debe al día de hoy<br>
         L <span id="total-debe"></span>
+    </div>
+
+    <div class="card faltante-moto">
+        Total faltante que se debe de la moto<br>
+        L <span id="total-faltante-moto"></span>
+        <small>Saldo pendiente del precio total de la moto, descontando todos los abonos registrados.</small>
     </div>
 </div>
 
@@ -145,12 +169,14 @@ abonos.forEach(a => {
 });
 
 const totalDebe = Math.max(0, totalDeberia - totalAbonado);
+const totalFaltanteMoto = Math.max(0, totalAPagar - totalAbonado);
 
 // ====== MOSTRAR ======
 document.getElementById("dias").innerText = dias;
 document.getElementById("deberia").innerText = totalDeberia.toLocaleString();
 document.getElementById("total-abonado").innerText = totalAbonado.toLocaleString();
 document.getElementById("total-debe").innerText = totalDebe.toLocaleString();
+document.getElementById("total-faltante-moto").innerText = totalFaltanteMoto.toLocaleString();
 </script>
 
 </body>
